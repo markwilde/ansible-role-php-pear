@@ -1,0 +1,6 @@
+---
+php_pear_channels:
+  - pear.php.net
+
+php_pecl_channels:
+  - pecl.php.net

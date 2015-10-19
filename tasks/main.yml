@@ -1,0 +1,25 @@
+---
+- name: include os-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- include: "debian/main.yml"
+  when: ansible_os_family == 'Debian'
+
+- include: "redhat/main.yml"
+  when: ansible_os_family == 'RedHat'
+
+- name: update pear channel
+  command: pear channel-discover {{ item }}
+  with_items: php_pear_channels
+  when: php_pear_channels is defined
+  register: channel_result
+  changed_when: "'initialized' not in channel_result.stdout"
+  failed_when: "'already initialized' not in channel_result.stdout"
+
+- name: update pecl channel
+  command: pecl channel-discover {{ item }}
+  with_items: php_pecl_channels
+  when: php_pecl_channels is defined
+  register: channel_result
+  changed_when: "'initialized' not in channel_result.stdout"
+  failed_when: "'already initialized' not in channel_result.stdout"

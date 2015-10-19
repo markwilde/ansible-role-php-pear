@@ -1,0 +1,3 @@
+---
+- name: redhat | install pear package for php
+  yum: name={{yum_package}} state=installed
